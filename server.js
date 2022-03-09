@@ -32,6 +32,7 @@ app.post("/api/shorturl", (req, res) => {
     short_url: null
   };
   const isValid = lib.isAddressValid(inputData);
+  console.log("is valid: ", isValid);
 
   if (isValid === true) {
     // if the input is a valid url

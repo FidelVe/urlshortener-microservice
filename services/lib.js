@@ -67,7 +67,9 @@ function isAddressValid(address) {
     }
     console.log(`checking input ${addressToCheck}`);
     let myURL = new URL(addressToCheck);
-    if (myURL.protocol === "http:" || myURL.protocol === "http:") {
+    console.log("valid url", myURL);
+
+    if (myURL.protocol === "https:" || myURL.protocol === "http:") {
       return true;
     } else {
       return false;
