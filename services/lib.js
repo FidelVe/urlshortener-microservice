@@ -13,16 +13,24 @@ function dbSchema() {
 
 // Functions
 function readDb() {
-  if (fs.existsSync(customPath(DB_PATH))) {
-    return JSON.parse(fs.readFileSync(customPath(DB_PATH)));
-  } else {
-    const db = dbSchema();
-    writeDb(db);
-    return db;
+  console.log(`reading database at path: ${customPath(DB_PATH)}`);
+  try {
+    if (fs.existsSync(customPath(DB_PATH))) {
+      return JSON.parse(fs.readFileSync(customPath(DB_PATH)));
+    } else {
+      const db = dbSchema();
+      writeDb(db);
+      return db;
+    }
+  } catch (err) {
+    console.log(`error trying to read database at ${customPath(DB_PATH)}`);
+    console.log(err);
+    throw "FATAL ERROR WHILE READING DB";
   }
 }
 
 function writeDb(db) {
+  console.log(`writing database at path: ${customPath(DB_PATH)}`);
   try {
     fs.writeFileSync(customPath(DB_PATH), JSON.stringify(db));
   } catch (err) {
