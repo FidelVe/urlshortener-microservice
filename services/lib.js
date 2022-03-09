@@ -42,18 +42,33 @@ function promisifiedLookup(address) {
   });
 }
 
-async function isAddressValid(address) {
-  let result = null;
-  console.log(`\nrunning lookup on ${address}...`);
+function isAddressValid(address) {
+  const protocols = ["http", "https", "ftp", "HTTP", "HTTPS", "FTP"];
+  let addressToCheck = address;
+  let startsWithValidProtocol = false;
   try {
-    result = await promisifiedLookup(address);
-  } catch (err) {
-    console.log("error running lookup: ", err);
-    result = false;
-  }
-  return result;
-}
+    for (let protocol of protocols) {
+      if (addressToCheck.startsWith(protocol)) {
+        startsWithValidProtocol = true;
+        break;
+      }
+    }
 
+    if (!startsWithValidProtocol) {
+      addressToCheck = "https://" + addressToCheck;
+    }
+    console.log(`checking input ${addressToCheck}`);
+    let myURL = new URL(addressToCheck);
+    if (myURL.protocol === "http:" || myURL.protocol === "http:") {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log(`error: ${address} is not a valid address`, err);
+    return false;
+  }
+}
 module.exports = {
   isAddressValid: isAddressValid,
   readDb: readDb,

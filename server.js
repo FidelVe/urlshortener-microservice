@@ -17,7 +17,7 @@ app.get("/", function(req, res) {
   res.sendFile(process.cwd() + "/views/index.html");
 });
 
-app.post("/api/shorturl", async (req, res) => {
+app.post("/api/shorturl", (req, res) => {
   // validate the url, if is valid check if the url is already in the database
   // and reply with a json object showing the url and the index position inside
   // the database. If the url doesnt exists in the database add it and reply
@@ -25,11 +25,13 @@ app.post("/api/shorturl", async (req, res) => {
   // database.
   //
   const inputData = req.body.url;
+  console.log("method: ", req.method);
+  console.log("body: ", req.body);
   let result = {
     original_url: null,
     short_url: null
   };
-  const isValid = await lib.isAddressValid(inputData);
+  const isValid = lib.isAddressValid(inputData);
 
   if (isValid === true) {
     // if the input is a valid url
